@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Next Bus Arrival</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to top, #14086e, #fed6e3);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .card {
+            background: rgb(220, 159, 159);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 50px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #next-bus {
+            font-size: 1.4em;
+            color: #145830;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+.road {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 1600px;
+    height: 100px;
+    background-color: #1a1447;
+    z-index: -1; /* Optional: keeps it behind other elements */
+
+}
+        .bus {
+            width: 100px;
+            height: 60px;
+            background: #f39c12;
+            border-radius: 8px;
+            position: absolute;
+            bottom: 110px;
+            left: -120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            animation: drive 10s linear infinite;
+        }
+
+        .wheel {
+            width: 15px;
+            height: 15px;
+            background: #2c3e50;
+            border-radius: 50%;
+            position: absolute;
+            bottom: -7px;
+        }
+
+        .wheel.left {
+            left: 15px;
+        }
+
+        .wheel.right {
+            right: 15px;
+        }
+
+        @keyframes drive {
+            from {
+                left: -120px;
+            }
+
+            to {
+                left: 110%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+  
+    <div class="container">
+          <h1 style="margin-top: 10px; color:  #333">Nitte to Mangalore</h1>
+
+        <div class="card">
+            <h1>Next Bus Information</h1>
+            <p id="next-bus">Checking next bus...</p>
+        </div>
+
+        <div class="bus">
+            BUS
+            <div class="wheel left"></div>
+            <div class="wheel right"></div>
+        </div>
+
+        <div class="road"></div>
+    </div>
+
+    <script>
+        const busTimings = [
+            { time: "08:00", name: "Vishal" },
+            { time: "08:10", name: "Vishal" },
+            { time: "08:46", name: "Vishal" },
+            { time: "09:30", name: "Navadurga Prasad" },
+            { time: "09:45", name: "Vishal" },
+            { time: "10:05", name: "Laxmi Prasad" },
+            { time: "10:26", name: "Reshma" },
+            { time: "10:50", name: "Padmambikaa" },
+            { time: "11:10", name: "Padmambikaa" },
+            { time: "11:20", name: "Christa Kiran" },
+            { time: "12:00", name: "Navadurga Prasad" },
+            { time: "12:25", name: "Vishal" },
+            { time: "13:10", name: "Navadurga Prasad" },
+            { time: "13:32", name: "Vishal" },
+            { time: "14:00", name: "Vishal" },
+            { time: "15:05", name: "Reshma" },
+            { time: "16:10", name: "Ayra" },
+            { time: "17:22", name: "Navadurga Prasad" }
+        ];
+
+        // Sort the times
+        busTimings.sort((a, b) => {
+            const [h1, m1] = a.time.split(':').map(Number);
+            const [h2, m2] = b.time.split(':').map(Number);
+            return h1 * 60 + m1 - (h2 * 60 + m2);
+        });
+
+        const now = new Date();
+        const currentMins = now.getHours() * 60 + now.getMinutes();
+
+        const nextBus = busTimings.find(bus => {
+            const [h, m] = bus.time.split(':').map(Number);
+            return h * 60 + m > currentMins;
+        });
+
+        const nextBusEl = document.getElementById("next-bus");
+        if (nextBus) {
+            nextBusEl.textContent = `Next bus: ${nextBus.name} at ${nextBus.time}`;
+        } else {
+            nextBusEl.textContent = "No more buses for today.";
+        }
+    </script>
+</body>
+
+</html>
